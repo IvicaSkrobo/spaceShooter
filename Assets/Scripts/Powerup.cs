@@ -44,6 +44,9 @@ public class Powerup : MonoBehaviour
                         //shield
                         player.ActivateShield();
                         break;
+                    case 3:
+                        player.ResetAmmo();
+                        break;
                 }
 
             

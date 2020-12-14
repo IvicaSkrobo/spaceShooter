@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     [Header("Ammo")]
     [SerializeField]
     int _ammoCount = 15;
+    int startingAmmo;
     [SerializeField]
     AudioClip _outOfAmmoClip;
     AudioSource _audioSourceAmmo;
@@ -71,6 +72,7 @@ public class Player : MonoBehaviour
         _spawnManager = FindObjectOfType<SpawnManager>();
         _shieldSprite = shield.GetComponent<SpriteRenderer>();
         _audioSourceAmmo = GetComponent<AudioSource>();
+        startingAmmo = _ammoCount;
     }
 
 
@@ -160,22 +162,7 @@ public class Player : MonoBehaviour
     {
         if (isShieldActive)
         {
-
-            _shieldHits++;
-
-            if (_shieldHits == 3)
-            {
-                shield.gameObject.SetActive(false);
-                isShieldActive = false;
-                _shieldHits = 0;
-            }
-
-            if (_shieldSprite != null)
-            {
-                _shieldSprite.color = _shieldColors[_shieldHits];
-            }
-
-
+            ShieldHit();
 
             return;
         }
@@ -193,6 +180,23 @@ public class Player : MonoBehaviour
 
         DamageTheEngine();
 
+    }
+
+    private void ShieldHit()
+    {
+        _shieldHits++;
+
+        if (_shieldHits == 3)
+        {
+            shield.gameObject.SetActive(false);
+            isShieldActive = false;
+            _shieldHits = 0;
+        }
+
+        if (_shieldSprite != null)
+        {
+            _shieldSprite.color = _shieldColors[_shieldHits];
+        }
     }
 
     private void DamageTheEngine()
@@ -255,6 +259,14 @@ public class Player : MonoBehaviour
         isShieldActive = false;
         shield.gameObject.SetActive(false);
     }
+
+
+    public void ResetAmmo()
+    {
+        _ammoCount = startingAmmo;
+        _uIManager.UpdateAmmo(_ammoCount);
+    }
+
 
     public void AddScore(int points)
     {

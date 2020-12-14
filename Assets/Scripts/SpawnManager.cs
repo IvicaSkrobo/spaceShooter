@@ -56,7 +56,7 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(randomSpawnTime);
 
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7f, 0);
-            var randomPowerUp = Random.Range(0, 3);
+            var randomPowerUp = Random.Range(0, _powerupPrefab.Length);
             var newPowerUp = Instantiate(_powerupPrefab[randomPowerUp], posToSpawn, Quaternion.identity);
 
             newPowerUp.transform.parent = _powerupContainer.transform;
