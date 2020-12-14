@@ -210,6 +210,16 @@ public class Player : MonoBehaviour
 
     }
 
+    private void HealTheEngine()
+    {
+        var randEngine = UnityEngine.Random.Range(0, 2);
+        while (!_engineDamage[randEngine].gameObject.activeInHierarchy)
+        {
+            randEngine = UnityEngine.Random.Range(0, 2);
+        }
+        _engineDamage[randEngine].gameObject.SetActive(false);
+    }
+
     public void ActivateTripleShot()
     {
         isTripleShotActive = true;
@@ -265,6 +275,17 @@ public class Player : MonoBehaviour
     {
         _ammoCount = startingAmmo;
         _uIManager.UpdateAmmo(_ammoCount);
+    }
+
+
+    public void AddLife()
+    {
+        if (_lives < 3 && _lives>0)
+        {
+            _lives++;
+            HealTheEngine();
+            _uIManager.UpdateLives(_lives);
+        }
     }
 
 
