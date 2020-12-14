@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-     [Header("Enemy")]
+    [Header("Enemy")]
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] GameObject _enemyContainer;
 
@@ -50,13 +50,26 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         while (!stopSpawning)
-        
+
         {
             var randomSpawnTime = Random.Range(3f, 7f);
             yield return new WaitForSeconds(randomSpawnTime);
 
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7f, 0);
+
             var randomPowerUp = Random.Range(0, _powerupPrefab.Length);
+
+
+            //give it a chance to not spawn the heat seeking power up
+            if (randomPowerUp == 5)
+            {
+                if (Random.Range(0, 4) < 1)
+                {
+                    randomPowerUp = Random.Range(0, _powerupPrefab.Length);
+                }
+                
+            }
+
             var newPowerUp = Instantiate(_powerupPrefab[randomPowerUp], posToSpawn, Quaternion.identity);
 
             newPowerUp.transform.parent = _powerupContainer.transform;

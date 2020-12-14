@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class Laser : MonoBehaviour
 {
 
     [SerializeField]
-    float _speed = 8;
+    protected float _speed = 8;
     [SerializeField]
     bool _isEnemyLaser;
     // Update is called once per frame
@@ -19,7 +20,7 @@ public class Laser : MonoBehaviour
 
 
 
-    private void Movement()
+    protected virtual void Movement()
     {
         if (!_isEnemyLaser)
         {
@@ -43,7 +44,7 @@ public class Laser : MonoBehaviour
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
     }
 
-    private void Destruction()
+    protected virtual void Destruction()
     {
         if (transform.position.y > 8 || transform.position.y<-8f)
         {

@@ -41,6 +41,13 @@ public class Player : MonoBehaviour
     AudioClip _outOfAmmoClip;
     AudioSource _audioSourceAmmo;
 
+
+    [Header("HeatSeek")]
+    [SerializeField]
+    GameObject _heatSeek;
+    [SerializeField]
+    private bool isHeatSeekActive = false;
+
     [Header("TripleShot")]
     [SerializeField]
     GameObject _tripleShot;
@@ -62,6 +69,9 @@ public class Player : MonoBehaviour
 
     SpawnManager _spawnManager;
     UIManager _uIManager;
+
+  
+
     int _score = 0;
 
     // Start is called before the first frame update
@@ -80,6 +90,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
+
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
@@ -112,9 +123,12 @@ public class Player : MonoBehaviour
 
 
 
+        if (isHeatSeekActive)
+        {
+            Instantiate(_heatSeek, transform.position, Quaternion.identity);
 
-
-        if (isTripleShotActive)
+        }
+        else if (isTripleShotActive)
         {
             Instantiate(_tripleShot, transform.position, Quaternion.identity);
 
@@ -293,6 +307,20 @@ public class Player : MonoBehaviour
     {
         _score += points;
         _uIManager.UpdateScore(_score);
+    }
+
+
+    public void ActivateHeatSeek()
+    {
+        isHeatSeekActive = true;
+        StartCoroutine(HeatSeekPowerDown());
+    }
+
+
+    private IEnumerator HeatSeekPowerDown()
+    {
+        yield return new WaitForSeconds(5f);
+        isHeatSeekActive = false;
     }
 
 }

@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour
     private Player _player;
 
     Animator _anim;
-    [SerializeField]
     AudioSource _audioSource;
 
     [Header("Laser attributes")]
@@ -47,7 +46,7 @@ public class Enemy : MonoBehaviour
             transform.position = new Vector3(randomX, 7, 0);
         }
 
-
+        
         if (Time.time > _cdFire && !isDestroyed)
         {
             CdChange();
@@ -98,6 +97,12 @@ public class Enemy : MonoBehaviour
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.5f);
         }
+    }
+
+
+    public bool IsDestroyed()
+    {
+        return isDestroyed;
     }
 }
 

@@ -305,6 +305,9 @@ MonoBehaviour:
   _fireRate: 0.15
   _ammoCount: 15
   _outOfAmmoClip: {fileID: 8300000, guid: 327ac03b0c04260428b4e36f40bffd57, type: 3}
+  _heatSeek: {fileID: 5926181420858631570, guid: b704be4fc297a4142a2d1a34cbce48de,
+    type: 3}
+  isHeatSeekActive: 0
   _tripleShot: {fileID: 8700224293567691657, guid: 931abf840fd7f534a9a582c1ece030f8,
     type: 3}
   shield: {fileID: 1127882518}
@@ -1411,7 +1414,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1597130820
 GameObject:
@@ -1761,6 +1764,7 @@ MonoBehaviour:
   - {fileID: 5290877046876117463, guid: 4ce91ddaaa0c2cc4d8c88e4d1071c92a, type: 3}
   - {fileID: 8327212364372209032, guid: 944cf1630393e97428f67dfc8647b88c, type: 3}
   - {fileID: 3167978178265551829, guid: dbdc6f68662546646b33bf3ede01c805, type: 3}
+  - {fileID: 2082612311479180389, guid: fe34f6713e6c10742805dbbbbbaddf19, type: 3}
   _powerupContainer: {fileID: 2025605929}
 --- !u!4 &1869381206
 Transform:
@@ -2098,7 +2102,7 @@ PrefabInstance:
     - target: {fileID: 4909971534009850211, guid: f048b4545f290544491afd88fa834879,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4909971534009850211, guid: f048b4545f290544491afd88fa834879,
         type: 3}
