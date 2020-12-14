@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     Vector3 _offsetLaser;
 
-   
+    bool isDestroyed = false;
     [SerializeField]
     float  _cdFire;
     float fireRate;
@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
         }
 
 
-        if (Time.time > _cdFire)
+        if (Time.time > _cdFire && !isDestroyed)
         {
             CdChange();
             Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity);
@@ -75,6 +75,8 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _audioSource.Play();
 
+            isDestroyed = true;
+
             Destroy(this.gameObject, 2.5f);
         }
 
@@ -91,8 +93,10 @@ public class Enemy : MonoBehaviour
 
             _anim.SetTrigger("OnEnemyDeath");
 
+            isDestroyed = true;
+
             Destroy(GetComponent<Collider2D>());
-           Destroy(this.gameObject, 2.5f);
+            Destroy(this.gameObject, 2.5f);
         }
     }
 }

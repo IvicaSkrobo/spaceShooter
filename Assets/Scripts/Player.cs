@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
     private float _speedMultiplier = 2f;
     private bool isSpeedBoostActive = false;
 
+    private float _speedMultiplierLShift = 2f;
+
+
     [Header("Laser attributes")]
     [SerializeField]
     GameObject _laserPrefab;
@@ -38,7 +41,12 @@ public class Player : MonoBehaviour
 
     [Header("Shield")]
     [SerializeField] GameObject shield;
+    [SerializeField] Color[] _shieldColors;
+    
+    SpriteRenderer _shieldSprite;
+    int _shieldHits = 0;
     private bool isShieldActive = false;
+    float _shieldPowerDownTime = 15f;
 
     [Header("EngineDamage")]
     [SerializeField]
@@ -54,6 +62,7 @@ public class Player : MonoBehaviour
         this.transform.position = Vector3.zero;
         _uIManager = FindObjectOfType<UIManager>();
         _spawnManager = FindObjectOfType<SpawnManager>();
+        _shieldSprite = shield.GetComponent<SpriteRenderer>();
     }
 
 
@@ -65,6 +74,15 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             FireLaser();
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _speedMultiplierLShift = 2f;
+        }
+        else
+        {
+            _speedMultiplierLShift = 1f;
         }
     }
 
@@ -93,11 +111,11 @@ public class Player : MonoBehaviour
 
         if (isSpeedBoostActive)
         {
-            transform.Translate(direction * _speed *_speedMultiplier* Time.deltaTime);
+            transform.Translate(direction * _speed * _speedMultiplierLShift * _speedMultiplier* Time.deltaTime);
         }
         else
         {
-            transform.Translate(direction * _speed * Time.deltaTime);
+            transform.Translate(direction * _speed *_speedMultiplierLShift * Time.deltaTime);
 
         }
 
@@ -120,8 +138,26 @@ public class Player : MonoBehaviour
     {
         if (isShieldActive)
         {
-            shield.gameObject.SetActive(false);
-            isShieldActive = false;
+
+            _shieldHits++;
+
+
+
+
+            if (_shieldHits == 3)
+            {
+                shield.gameObject.SetActive(false);
+                isShieldActive = false;
+                _shieldHits = 0;
+            }
+
+            if (_shieldSprite != null)
+            {
+                _shieldSprite.color = _shieldColors[_shieldHits];
+            }
+
+
+
             return;
         }
 
@@ -180,13 +216,23 @@ public class Player : MonoBehaviour
     {
         isShieldActive = true;
         shield.gameObject.SetActive(true);
+        _shieldHits = 0;
+        _shieldSprite.color = _shieldColors[0];
+
+        if (isShieldActive)
+        {
+           
+            _shieldPowerDownTime = 15f;
+            return;
+        }
+
         StartCoroutine(ShieldPowerDown());
 
     }
 
     private IEnumerator ShieldPowerDown()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(_shieldPowerDownTime);
         isShieldActive = false;
         shield.gameObject.SetActive(false);
     }
