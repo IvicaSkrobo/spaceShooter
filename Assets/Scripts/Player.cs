@@ -33,6 +33,13 @@ public class Player : MonoBehaviour
 
     float _canFire = -1f;
 
+    [Header("Ammo")]
+    [SerializeField]
+    int _ammoCount = 15;
+    [SerializeField]
+    AudioClip _outOfAmmoClip;
+    AudioSource _audioSourceAmmo;
+
     [Header("TripleShot")]
     [SerializeField]
     GameObject _tripleShot;
@@ -42,7 +49,7 @@ public class Player : MonoBehaviour
     [Header("Shield")]
     [SerializeField] GameObject shield;
     [SerializeField] Color[] _shieldColors;
-    
+
     SpriteRenderer _shieldSprite;
     int _shieldHits = 0;
     private bool isShieldActive = false;
@@ -63,6 +70,7 @@ public class Player : MonoBehaviour
         _uIManager = FindObjectOfType<UIManager>();
         _spawnManager = FindObjectOfType<SpawnManager>();
         _shieldSprite = shield.GetComponent<SpriteRenderer>();
+        _audioSourceAmmo = GetComponent<AudioSource>();
     }
 
 
@@ -90,6 +98,20 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
+        if (_ammoCount <= 0)
+        {
+            _audioSourceAmmo.PlayOneShot(_outOfAmmoClip);
+            return;
+        }
+
+        _ammoCount--;
+
+        _uIManager.UpdateAmmo(_ammoCount);
+
+
+
+
+
         if (isTripleShotActive)
         {
             Instantiate(_tripleShot, transform.position, Quaternion.identity);
@@ -111,11 +133,11 @@ public class Player : MonoBehaviour
 
         if (isSpeedBoostActive)
         {
-            transform.Translate(direction * _speed * _speedMultiplierLShift * _speedMultiplier* Time.deltaTime);
+            transform.Translate(direction * _speed * _speedMultiplierLShift * _speedMultiplier * Time.deltaTime);
         }
         else
         {
-            transform.Translate(direction * _speed *_speedMultiplierLShift * Time.deltaTime);
+            transform.Translate(direction * _speed * _speedMultiplierLShift * Time.deltaTime);
 
         }
 
@@ -140,9 +162,6 @@ public class Player : MonoBehaviour
         {
 
             _shieldHits++;
-
-
-
 
             if (_shieldHits == 3)
             {
@@ -221,7 +240,7 @@ public class Player : MonoBehaviour
 
         if (isShieldActive)
         {
-           
+
             _shieldPowerDownTime = 15f;
             return;
         }

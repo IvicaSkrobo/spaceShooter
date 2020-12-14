@@ -8,7 +8,8 @@ public class UIManager : MonoBehaviour
     Text _gameOverText;
     [SerializeField]
     Text _scoreText;
-    // Start is called before the first frame update
+    [SerializeField]
+    Text _ammoText;
 
     [SerializeField]
     Text _restartText;
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
     public void Start()
     {
         _scoreText.text = "Score: 0";
+        _ammoText.text = "Ammo: 15";
         livesImg.sprite = _livesSprites[3];
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
@@ -30,6 +32,11 @@ public class UIManager : MonoBehaviour
         _gameManager = FindObjectOfType<GameManager>();
     }
 
+    public void UpdateAmmo(int ammo)
+    {
+        _ammoText.text = "Ammo: " + ammo.ToString();
+
+    }
 
     public void UpdateScore(int score)
     {
