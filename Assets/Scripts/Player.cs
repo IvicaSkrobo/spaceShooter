@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
     SpawnManager _spawnManager;
     UIManager _uIManager;
 
-  
+    CameraShake _camera;
 
     int _score = 0;
 
@@ -85,6 +85,7 @@ public class Player : MonoBehaviour
         _shieldSprite = shield.GetComponent<SpriteRenderer>();
         _audioSourceAmmo = GetComponent<AudioSource>();
         startingAmmo = _ammoCount;
+        _camera = Camera.main.GetComponent<CameraShake>();
     }
 
 
@@ -99,7 +100,7 @@ public class Player : MonoBehaviour
             FireLaser();
         }
 
-        if (Input.GetKey(KeyCode.LeftShift)  && _boostReady)
+        if (Input.GetKey(KeyCode.LeftShift) && _boostReady)
         {
             _speedMultiplierLShift = 2f;
             BoostCalculations();
@@ -177,11 +178,18 @@ public class Player : MonoBehaviour
 
     public void DamagePlayer()
     {
+
         if (isShieldActive)
         {
             ShieldHit();
 
             return;
+        }
+
+
+        if (_camera != null)
+        {
+            _camera.Shake();
         }
 
         _lives--;
@@ -297,7 +305,7 @@ public class Player : MonoBehaviour
 
     public void AddLife()
     {
-        if (_lives < 3 && _lives>0)
+        if (_lives < 3 && _lives > 0)
         {
             _lives++;
             HealTheEngine();
