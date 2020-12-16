@@ -19,6 +19,9 @@ public class UIManager : MonoBehaviour
     Image livesImg;
 
 
+    [SerializeField]
+    Image _boostImg;
+
     GameManager _gameManager;
 
     public void Start()
@@ -28,8 +31,8 @@ public class UIManager : MonoBehaviour
         livesImg.sprite = _livesSprites[3];
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
-
-        _gameManager = FindObjectOfType<GameManager>();
+        _boostImg.fillAmount = 0;
+       _gameManager = FindObjectOfType<GameManager>();
     }
 
     public void UpdateAmmo(int ammo)
@@ -74,5 +77,17 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
 
         }
+    }
+
+    public void Update()
+    {
+        
+    }
+
+    public void UpdateBooster(float boostFillAmount)
+    {
+
+        _boostImg.fillAmount = boostFillAmount;
+
     }
 }

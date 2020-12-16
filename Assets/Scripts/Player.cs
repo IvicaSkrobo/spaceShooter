@@ -17,7 +17,8 @@ public class Player : MonoBehaviour
     private bool isSpeedBoostActive = false;
 
     private float _speedMultiplierLShift = 2f;
-
+    bool _boostReady = true;
+    float _boostFillAmount = 0f;
 
     [Header("Laser attributes")]
     [SerializeField]
@@ -74,6 +75,7 @@ public class Player : MonoBehaviour
 
     int _score = 0;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -97,9 +99,10 @@ public class Player : MonoBehaviour
             FireLaser();
         }
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift)  && _boostReady)
         {
             _speedMultiplierLShift = 2f;
+            BoostCalculations();
         }
         else
         {
@@ -322,5 +325,34 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5f);
         isHeatSeekActive = false;
     }
+
+
+    private void BoostCalculations()
+    {
+        _boostFillAmount += 1.0f / 5f * Time.deltaTime;
+
+        _uIManager.UpdateBooster(_boostFillAmount);
+        if (_boostFillAmount >= 1)
+        {
+            _boostReady = false;
+            StartCoroutine(BoostCooldown());
+        }
+    }
+
+    private IEnumerator BoostCooldown()
+    {
+        var timer = 3f;
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            _boostFillAmount -= 1 / 3f * Time.deltaTime;
+            _uIManager.UpdateBooster(_boostFillAmount);
+            yield return new WaitForEndOfFrame();
+        }
+
+        _boostReady = true;
+
+    }
+
 
 }
