@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     [Header("Ammo")]
     [SerializeField]
     int _ammoCount = 15;
-    int startingAmmo;
+    int _ammoMax;
     [SerializeField]
     AudioClip _outOfAmmoClip;
     AudioSource _audioSourceAmmo;
@@ -84,8 +84,16 @@ public class Player : MonoBehaviour
         _spawnManager = FindObjectOfType<SpawnManager>();
         _shieldSprite = shield.GetComponent<SpriteRenderer>();
         _audioSourceAmmo = GetComponent<AudioSource>();
-        startingAmmo = _ammoCount;
+        _ammoMax = _ammoCount;
+
         _camera = Camera.main.GetComponent<CameraShake>();
+
+
+        if (_uIManager)
+        {
+            _uIManager.UpdateAmmo(_ammoCount, _ammoMax);
+        }
+
     }
 
 
@@ -123,7 +131,7 @@ public class Player : MonoBehaviour
 
         _ammoCount--;
 
-        _uIManager.UpdateAmmo(_ammoCount);
+        _uIManager.UpdateAmmo(_ammoCount,_ammoMax);
 
 
 
@@ -298,8 +306,8 @@ public class Player : MonoBehaviour
 
     public void ResetAmmo()
     {
-        _ammoCount = startingAmmo;
-        _uIManager.UpdateAmmo(_ammoCount);
+        _ammoCount = _ammoMax;
+        _uIManager.UpdateAmmo(_ammoCount,_ammoMax);
     }
 
 
