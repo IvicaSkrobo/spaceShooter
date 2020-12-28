@@ -63,7 +63,7 @@ public class SpawnManager : MonoBehaviour
             //give it a chance to not spawn the heat seeking power up
             if (randomPowerUp == 5)
             {
-                if (Random.Range(0, 4) < 1)
+               if (Random.Range(0, 4) < 1)
                 {
                     randomPowerUp = Random.Range(0, _powerupPrefab.Length);
                 }

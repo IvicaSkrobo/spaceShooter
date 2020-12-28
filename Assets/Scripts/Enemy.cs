@@ -20,9 +20,23 @@ public class Enemy : MonoBehaviour
 
     bool isDestroyed = false;
     [SerializeField]
-    float  _cdFire;
+    float _cdFire;
     float fireRate;
 
+    int _randomMovement = 0;
+    int _randomSideMovement = 0;
+
+    float _posX;
+    float _posY;
+
+    [SerializeField]
+    float _angle = 0f;
+    [SerializeField]
+    float _angularSpeed = 0.1f;
+    [SerializeField]
+    float _radius = 0.2f;    
+
+    Vector3 _rotCenter;
     private void Start()
     {
         _player = FindObjectOfType<Player>();
@@ -32,25 +46,91 @@ public class Enemy : MonoBehaviour
         CdChange();
 
     }
+
+
+    private void OnEnable()
+    {
+        RandomMovementReset();
+    }
+
+    private void RandomMovementReset()
+    {
+
+        float randomX = Random.Range(-8f, 8f);
+
+        transform.position = new Vector3(randomX, 8, 0);
+
+        _randomMovement = Random.Range(0, 3);
+        _randomSideMovement = Random.Range(0, 2);
+
+        _rotCenter = transform.position;
+    }
+
     // Update is called once per frame
     void Update()
     {
-
-
-          transform.Translate(Vector3.down * Time.deltaTime * _speed);
+        Movement();
 
         if (transform.position.y < -8)
         {
-            float randomX = Random.Range(-8f, 8f);
 
-            transform.position = new Vector3(randomX, 7, 0);
+
+            RandomMovementReset();
         }
 
-        
+
         if (Time.time > _cdFire && !isDestroyed)
         {
             CdChange();
             Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity);
+        }
+    }
+
+    private void Movement()
+    {
+        switch (_randomMovement)
+        {
+            case 0:
+                transform.Translate(Vector3.down * Time.deltaTime * _speed);
+
+
+                break;
+            case 1:
+                _posX = 1;
+                if (_randomSideMovement == 0)
+                {
+                    _posX = 1;
+                }
+                else
+                {
+                    _posX = -1;
+                }
+
+                transform.Translate(new Vector3(_posX, -0.1f, 0) * Time.deltaTime * _speed);
+
+
+
+                if (transform.position.x <= -11.3)
+                {
+                    transform.position = new Vector3(11.3f, transform.position.y, transform.position.z);
+                }
+                else if (transform.position.x >= 11.3)
+                {
+                    transform.position = new Vector3(-11.3f, transform.position.y, transform.position.z);
+                }
+                break;
+
+            case 2:
+              
+                _angle += _angularSpeed * Time.deltaTime;
+
+                var offset = new Vector3(Mathf.Sin(_angle), Mathf.Cos(_angle)) * _radius;
+                transform.position = _rotCenter + offset;
+
+                _rotCenter.y -= 0.001f;
+
+
+                break;
         }
     }
 
@@ -60,7 +140,7 @@ public class Enemy : MonoBehaviour
         _cdFire = Time.time + fireRate;
     }
 
- 
+
 
     public void OnTriggerEnter2D(Collider2D other)
     {
@@ -84,7 +164,7 @@ public class Enemy : MonoBehaviour
             Destroy(other.gameObject);
             _speed = 0;
 
-            if (_player!= null)
+            if (_player != null)
             {
                 _player.AddScore(10);
             }

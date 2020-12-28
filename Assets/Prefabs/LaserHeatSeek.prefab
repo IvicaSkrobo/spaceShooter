@@ -166,8 +166,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 8
   _isEnemyLaser: 0
-  radiusSearch: 5
-  rotateSpeed: 15
+  _radiusSearch: 3
+  _rotateSpeed: 1
 --- !u!70 &1984353691037192116
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
