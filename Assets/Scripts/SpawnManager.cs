@@ -14,6 +14,19 @@ public class SpawnManager : MonoBehaviour
 
     private bool stopSpawning = false;
 
+    int waweNumber = 0;
+    int nextWawe = 0;
+    int enemiesPerWawe = 3;
+
+    int enemiesToSpawn = 3;
+
+    UIManager _uiManager;
+
+    private void Start()
+    {
+        _uiManager = FindObjectOfType<UIManager>();
+    }
+
     public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
@@ -27,12 +40,43 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         while (!stopSpawning)
         {
+            
+            if (waweNumber == nextWawe)
+            {
+                nextWawe++;
+                enemiesPerWawe = waweNumber + 2;
+                enemiesToSpawn = enemiesPerWawe;
+
+                _uiManager.UpdateWaweText(waweNumber+1);
+
+                yield return new WaitForSeconds(5f);
+
+            }
+
+            enemiesToSpawn--;
+
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7f, 0);
             var newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
 
+            newEnemy.GetComponent<Enemy>().SetSpawnManager(this);
+
             newEnemy.transform.parent = _enemyContainer.transform;
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(1f);
+
+            if (enemiesToSpawn == 0)
+            {
+                yield return new WaitUntil(() => waweNumber == nextWawe);
+            }
+        }
+    }
+
+    public void EnemyDestroyed()
+    {
+        enemiesPerWawe--;
+        if (enemiesPerWawe == 0)
+        {
+            waweNumber++;
         }
     }
 

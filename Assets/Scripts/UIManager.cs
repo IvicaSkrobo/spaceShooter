@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ public class UIManager : MonoBehaviour
     Text _scoreText;
     [SerializeField]
     Text _ammoText;
+    [SerializeField]
+    Text _waweText;
 
     [SerializeField]
     GameObject ammoUI;
@@ -38,6 +41,8 @@ public class UIManager : MonoBehaviour
        _gameManager = FindObjectOfType<GameManager>();
 
         ammoImages = ammoUI.GetComponentsInChildren<Transform>();
+        _waweText.gameObject.SetActive(false);
+
     }
 
     public void UpdateAmmo(int ammo,int ammoMax)
@@ -100,6 +105,20 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
 
         }
+    }
+    public void UpdateWaweText(int waweNumb)
+    {
+        StartCoroutine(ShowWaweText(waweNumb));
+    }
+
+    private IEnumerator ShowWaweText(int _waweNumb)
+    {
+        _waweText.gameObject.SetActive(true);
+        _waweText.text = "WAWE "+ _waweNumb.ToString() +"\n"+ "Are you ready?";
+
+        yield return new WaitForSeconds(4f);
+        _waweText.gameObject.SetActive(false);
+
     }
 
     public void Update()

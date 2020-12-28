@@ -37,6 +37,13 @@ public class Enemy : MonoBehaviour
     float _radius = 0.2f;    
 
     Vector3 _rotCenter;
+
+     SpawnManager _spawnManager;
+
+    public void SetSpawnManager(SpawnManager spawnManager)
+    {
+        _spawnManager = spawnManager;
+    }
     private void Start()
     {
         _player = FindObjectOfType<Player>();
@@ -73,13 +80,11 @@ public class Enemy : MonoBehaviour
 
         if (transform.position.y < -8)
         {
-
-
             RandomMovementReset();
         }
 
 
-        if (Time.time > _cdFire && !isDestroyed)
+        if (Time.time > _cdFire && !isDestroyed  && transform.position.y<7)
         {
             CdChange();
             Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity);
@@ -88,6 +93,11 @@ public class Enemy : MonoBehaviour
 
     private void Movement()
     {
+        if (isDestroyed)
+        {
+            return;
+        }
+
         switch (_randomMovement)
         {
             case 0:
@@ -127,7 +137,7 @@ public class Enemy : MonoBehaviour
                 var offset = new Vector3(Mathf.Sin(_angle), Mathf.Cos(_angle)) * _radius;
                 transform.position = _rotCenter + offset;
 
-                _rotCenter.y -= 0.001f;
+                _rotCenter.y -= 0.003f;
 
 
                 break;
@@ -146,7 +156,10 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-
+            if (isDestroyed)
+            {
+                return;
+            }
             if (_player != null)
             {
                 _player.DamagePlayer();
@@ -156,11 +169,17 @@ public class Enemy : MonoBehaviour
 
             isDestroyed = true;
 
+            _spawnManager.EnemyDestroyed();
+
             Destroy(this.gameObject, 2.5f);
         }
 
         if (other.CompareTag("Laser"))
         {
+            if (isDestroyed)
+            {
+                return;
+            }
             Destroy(other.gameObject);
             _speed = 0;
 
@@ -173,6 +192,7 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
 
             isDestroyed = true;
+            _spawnManager.EnemyDestroyed();
 
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.5f);

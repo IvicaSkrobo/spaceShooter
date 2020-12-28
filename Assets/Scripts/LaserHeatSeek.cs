@@ -24,7 +24,6 @@ public class LaserHeatSeek : Laser
         {
             if (hit.CompareTag("Enemy"))
             {
-                Debug.Log("Yuupi");
                 target = hit.transform.gameObject;
             }
         }
