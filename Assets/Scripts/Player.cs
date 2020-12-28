@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float _speed = 3.5f;
+    private float _defaultSpeed;
 
     [Header("SpeedBoost")]
     private float _speedMultiplier = 2f;
@@ -19,6 +20,8 @@ public class Player : MonoBehaviour
     private float _speedMultiplierLShift = 2f;
     bool _boostReady = true;
     float _boostFillAmount = 0f;
+
+    
 
     [Header("Laser attributes")]
     [SerializeField]
@@ -33,6 +36,11 @@ public class Player : MonoBehaviour
     float _fireRate = 0.5f;
 
     float _canFire = -1f;
+
+
+    [Header("isSlowActive")]
+    [SerializeField]
+    bool isSlowActive;
 
     [Header("Ammo")]
     [SerializeField]
@@ -94,6 +102,7 @@ public class Player : MonoBehaviour
             _uIManager.UpdateAmmo(_ammoCount, _ammoMax);
         }
 
+        _defaultSpeed = _speed;
     }
 
 
@@ -133,7 +142,7 @@ public class Player : MonoBehaviour
 
         _uIManager.UpdateAmmo(_ammoCount,_ammoMax);
 
-
+     
 
         if (isHeatSeekActive)
         {
@@ -159,6 +168,15 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
+        if (isSlowActive)
+        {
+            _speed = 0.5f* _defaultSpeed;
+        }
+        else
+        {
+            _speed = _defaultSpeed;
+        }
+       
         if (isSpeedBoostActive)
         {
             transform.Translate(direction * _speed * _speedMultiplierLShift * _speedMultiplier * Time.deltaTime);
@@ -371,4 +389,17 @@ public class Player : MonoBehaviour
     }
 
 
+    public void ActivateNegativePowerUp()
+    {
+        isSlowActive = true;
+
+        StartCoroutine(SlowPowerDown());
+
+    }
+
+    private IEnumerator SlowPowerDown()
+    {
+        yield return new WaitForSeconds(5f);
+        isSlowActive = false;
+    }
 }

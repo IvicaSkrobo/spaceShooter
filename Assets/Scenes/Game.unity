@@ -414,6 +414,7 @@ MonoBehaviour:
     type: 3}
   _offsetLaser: {x: 0, y: 1.05, z: 0}
   _fireRate: 0.15
+  isSlowActive: 0
   _ammoCount: 15
   _outOfAmmoClip: {fileID: 8300000, guid: 327ac03b0c04260428b4e36f40bffd57, type: 3}
   _heatSeek: {fileID: 5926181420858631570, guid: b704be4fc297a4142a2d1a34cbce48de,
@@ -1386,7 +1387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1021222955
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1404,7 +1405,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 89.89}
-  m_SizeDelta: {x: 103.41461, y: 50}
+  m_SizeDelta: {x: 103.41461, y: 125.55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1021222956
 MonoBehaviour:
@@ -1438,7 +1439,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 'Wawe 1
+
+    are you ready?'
 --- !u!222 &1021222957
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2693,6 +2696,7 @@ MonoBehaviour:
   _gameOverText: {fileID: 139345948}
   _scoreText: {fileID: 1597130822}
   _ammoText: {fileID: 1840069034}
+  _waweText: {fileID: 1021222956}
   ammoUI: {fileID: 1505901860}
   _restartText: {fileID: 785040078}
   _livesSprites:
@@ -3156,6 +3160,7 @@ MonoBehaviour:
   - {fileID: 8327212364372209032, guid: 944cf1630393e97428f67dfc8647b88c, type: 3}
   - {fileID: 3167978178265551829, guid: dbdc6f68662546646b33bf3ede01c805, type: 3}
   - {fileID: 2082612311479180389, guid: fe34f6713e6c10742805dbbbbbaddf19, type: 3}
+  - {fileID: 741709823801866025, guid: 12f047e2cf985cc4ab9eed2cd221018e, type: 3}
   _powerupContainer: {fileID: 2025605929}
 --- !u!4 &1869381206
 Transform:

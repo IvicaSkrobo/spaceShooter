@@ -53,6 +53,10 @@ public class Powerup : MonoBehaviour
                     case 5:
                         player.ActivateHeatSeek();
                         break;
+                    case 6:
+                        player.ActivateNegativePowerUp();
+                        break;
+
                 }
 
             
