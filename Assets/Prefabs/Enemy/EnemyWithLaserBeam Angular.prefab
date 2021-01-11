@@ -113,5 +113,15 @@ PrefabInstance:
       propertyPath: spawnChance
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 6706359183635302693, guid: 83d079dd395041b4ebf0d3ea68275f79,
+        type: 3}
+      propertyPath: _isAggresive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706359183635302693, guid: 83d079dd395041b4ebf0d3ea68275f79,
+        type: 3}
+      propertyPath: _aggroToPlayer
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83d079dd395041b4ebf0d3ea68275f79, type: 3}

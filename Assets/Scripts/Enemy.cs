@@ -59,6 +59,11 @@ public class Enemy : MonoBehaviour
     SpawnManager _spawnManager;
 
 
+    [Header("Aggresion attribute")]
+    [SerializeField]
+    bool _isAggresive = false;
+    [SerializeField]
+    float _aggroToPlayer = 5f;
     public float GetSpawnChance()
     {
         return spawnChance;
@@ -71,7 +76,7 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         _player = FindObjectOfType<Player>();
-        _anim = GetComponent<Animator>();
+        _anim = GetComponentInChildren<Animator>();
         _audioSource = GetComponent<AudioSource>();
 
         CdChange();
@@ -120,7 +125,7 @@ public class Enemy : MonoBehaviour
         }
 
 
-        if (Time.time > _cdFire && !isDestroyed && transform.position.y < 7)
+        if (_laserPrefab!=null && Time.time > _cdFire && !isDestroyed && transform.position.y < 7)
         {
             CdChange();
 
@@ -143,50 +148,64 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        switch (movementType)
+
+
+        if (_isAggresive && Vector2.Distance(this.transform.position, _player.transform.position) < _aggroToPlayer && transform.position.y >_player.transform.position.y+1)
         {
-            case MovementType.Down:
-                transform.Translate(Vector3.down * Time.deltaTime * _speed);
+            transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, Time.deltaTime * _speed);
 
-
-                break;
-            case MovementType.SideToSide:
-                _posX = 1;
-                if (_randomSideMovement == 0)
-                {
-                    _posX = 1;
-                }
-                else
-                {
-                    _posX = -1;
-                }
-
-                transform.Translate(new Vector3(_posX, -0.1f, 0) * Time.deltaTime * _speed);
-
-
-
-                if (transform.position.x <= -11.3)
-                {
-                    transform.position = new Vector3(11.3f, transform.position.y, transform.position.z);
-                }
-                else if (transform.position.x >= 11.3)
-                {
-                    transform.position = new Vector3(-11.3f, transform.position.y, transform.position.z);
-                }
-                break;
-
-            case MovementType.Angular:
-
-                _angle += _angularSpeed * Time.deltaTime;
-
-                var offset = new Vector3(Mathf.Sin(_angle), Mathf.Cos(_angle)) * _radius;
-                transform.position = _rotCenter + offset;
-
-                _rotCenter.y -= 0.003f;
-
-
-                break;
         }
+        else
+        {
+
+
+            switch (movementType)
+            {
+                case MovementType.Down:
+                    transform.Translate(Vector3.down * Time.deltaTime * _speed);
+
+
+                    break;
+                case MovementType.SideToSide:
+                    _posX = 1;
+                    if (_randomSideMovement == 0)
+                    {
+                        _posX = 1;
+                    }
+                    else
+                    {
+                        _posX = -1;
+                    }
+
+                    transform.Translate(new Vector3(_posX, -0.1f, 0) * Time.deltaTime * _speed);
+
+
+
+                    if (transform.position.x <= -11.3)
+                    {
+                        transform.position = new Vector3(11.3f, transform.position.y, transform.position.z);
+                    }
+                    else if (transform.position.x >= 11.3)
+                    {
+                        transform.position = new Vector3(-11.3f, transform.position.y, transform.position.z);
+                    }
+                    break;
+
+                case MovementType.Angular:
+
+                    _angle += _angularSpeed * Time.deltaTime;
+
+                    var offset = new Vector3(Mathf.Sin(_angle), Mathf.Cos(_angle)) * _radius;
+                    transform.position = _rotCenter + offset;
+
+                    _rotCenter.y -= 0.003f;
+
+
+                    break;
+            }
+
+
+        } 
     }
 
     private void CdChange()
@@ -199,12 +218,15 @@ public class Enemy : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-    
+
 
         if (other.CompareTag("Player"))
         {
+            _isAggresive = false;
+
             if (_hasShield)
             {
+
                 ShieldDestruction();
                 return;
             }

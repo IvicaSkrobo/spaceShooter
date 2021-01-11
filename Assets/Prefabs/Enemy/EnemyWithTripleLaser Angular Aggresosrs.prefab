@@ -80,7 +80,7 @@ PrefabInstance:
     - target: {fileID: 6086204364158418850, guid: 83d079dd395041b4ebf0d3ea68275f79,
         type: 3}
       propertyPath: m_Name
-      value: EnemyWithTripleLaser Angular
+      value: EnemyWithTripleLaser Angular Aggresosrs
       objectReference: {fileID: 0}
     - target: {fileID: 6706359183635302693, guid: 83d079dd395041b4ebf0d3ea68275f79,
         type: 3}

@@ -177,6 +177,8 @@ MonoBehaviour:
   _angle: 30
   _angularSpeed: 1
   _radius: 1
+  _isAggresive: 0
+  _aggroToPlayer: 4
 --- !u!212 &1103568272004139780
 SpriteRenderer:
   m_ObjectHideFlags: 0
