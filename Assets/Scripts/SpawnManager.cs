@@ -33,14 +33,14 @@ public class SpawnManager : MonoBehaviour
         _powerupsChances = new List<float>();
         _enemyChances = new List<float>();
 
-        for (int i = 0; i<_powerupPrefabs.Length;i++) 
+        for (int i = 0; i < _powerupPrefabs.Length; i++)
         {
             var chance = _powerupPrefabs[i].GetComponent<Powerup>().GetPowerUpChance();
             _powerupsChances.Add(chance);
             _sumOfPowerUpChances += chance;
         }
 
-       
+
         for (int i = 0; i < _enemyPrefabs.Length; i++)
         {
             var chance = _enemyPrefabs[i].GetComponent<Enemy>().GetSpawnChance();
@@ -81,6 +81,14 @@ public class SpawnManager : MonoBehaviour
             var newEnemy = Instantiate(_enemyPrefabs[RandomEnemyChance()], posToSpawn, Quaternion.identity);
 
             newEnemy.GetComponent<Enemy>().SetSpawnManager(this);
+
+            if (_waweNumber > 4)
+            {
+                if (Random.Range(0, _waweNumber) > _waweNumber / 2)
+                {
+                    newEnemy.GetComponent<Enemy>().GiveShield();
+                }
+            }
 
             newEnemy.transform.parent = _enemyContainer.transform;
 
@@ -123,7 +131,7 @@ public class SpawnManager : MonoBehaviour
 
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7f, 0);
 
-            var randomPowerUp = RandomPowerUpChance(); 
+            var randomPowerUp = RandomPowerUpChance();
 
 
             var newPowerUp = Instantiate(_powerupPrefabs[randomPowerUp], posToSpawn, Quaternion.identity);
@@ -137,7 +145,7 @@ public class SpawnManager : MonoBehaviour
 
     public int RandomPowerUpChance()
     {
-       var a = Random.Range(0f, _sumOfPowerUpChances);
+        var a = Random.Range(0f, _sumOfPowerUpChances);
 
         float sumOfChances = 0;
 

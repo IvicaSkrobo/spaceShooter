@@ -11,14 +11,14 @@ GameObject:
   - component: {fileID: 8263326801057879182}
   - component: {fileID: 5099681022269432749}
   - component: {fileID: 4882598995099890808}
-  - component: {fileID: 1914820917012441854}
+  - component: {fileID: 3620940316194711041}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8263326801057879182
 Transform:
   m_ObjectHideFlags: 0
@@ -102,7 +102,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1914820917012441854
+--- !u!114 &3620940316194711041
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 6440314124095542734}
   - component: {fileID: 586832238289483350}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy StartsWithShield
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,8 +165,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 4
-  spawnChance: 0.3
-  _hasShield: 0
+  spawnChance: 0.1
+  _hasShield: 1
   _shieldDestroyClip: {fileID: 8300000, guid: a42b8e0789fb2f64bb936cb45a79a4a4, type: 3}
   _laserPrefab: {fileID: 523857132015809188, guid: 91ad75cf0b18fb7468e61eccad5a8cec,
     type: 3}

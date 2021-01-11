@@ -20,6 +20,13 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float spawnChance = 0.1f;
 
+    [Header("Shield Attribute")]
+    [SerializeField]
+    bool _hasShield = false;
+    GameObject _shield;
+    [SerializeField]
+    AudioClip _shieldDestroyClip;
+
     [Header("Laser attributes")]
     [SerializeField]
     GameObject _laserPrefab;
@@ -45,11 +52,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float _angularSpeed = 0.1f;
     [SerializeField]
-    float _radius = 0.2f;    
+    float _radius = 0.2f;
 
     Vector3 _rotCenter;
 
-     SpawnManager _spawnManager;
+    SpawnManager _spawnManager;
 
 
     public float GetSpawnChance()
@@ -68,9 +75,22 @@ public class Enemy : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
 
         CdChange();
-
+        if (_hasShield)
+        {
+            GiveShield();
+        }
     }
 
+    public void GiveShield()
+    {
+        _hasShield = true;
+        if (_shield == null)
+        {
+            _shield = GetComponentInChildren<EnemyShield>(true).gameObject;
+        }
+
+        _shield.gameObject.SetActive(true);
+    }
 
     private void OnEnable()
     {
@@ -100,13 +120,13 @@ public class Enemy : MonoBehaviour
         }
 
 
-        if (Time.time > _cdFire && !isDestroyed  && transform.position.y<7)
+        if (Time.time > _cdFire && !isDestroyed && transform.position.y < 7)
         {
             CdChange();
-            
+
             if (_isLaserChild)
             {
-                Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity,this.transform);
+                Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity, this.transform);
             }
             else
             {
@@ -156,7 +176,7 @@ public class Enemy : MonoBehaviour
                 break;
 
             case MovementType.Angular:
-              
+
                 _angle += _angularSpeed * Time.deltaTime;
 
                 var offset = new Vector3(Mathf.Sin(_angle), Mathf.Cos(_angle)) * _radius;
@@ -179,8 +199,16 @@ public class Enemy : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
+    
+
         if (other.CompareTag("Player"))
         {
+            if (_hasShield)
+            {
+                ShieldDestruction();
+                return;
+            }
+
             if (isDestroyed)
             {
                 return;
@@ -201,6 +229,13 @@ public class Enemy : MonoBehaviour
 
         if (other.CompareTag("Laser"))
         {
+            if (_hasShield)
+            {
+                ShieldDestruction();
+
+                return;
+            }
+
             if (isDestroyed)
             {
                 return;
@@ -224,6 +259,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void ShieldDestruction()
+    {
+        //TODO remove shield
+        _hasShield = false;
+        _shield.gameObject.SetActive(false);
+        _audioSource.PlayOneShot(_shieldDestroyClip);
+        return;
+    }
 
     public bool IsDestroyed()
     {
