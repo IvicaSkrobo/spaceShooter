@@ -2,6 +2,12 @@
 using System.Collections;
 using UnityEngine;
 
+
+public enum MovementType
+{
+    SideToSide, Down, Angular
+}
+
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
@@ -16,14 +22,17 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     GameObject _laserPrefab;
     [SerializeField]
+    bool _isLaserChild = false;
+
+    [SerializeField]
     Vector3 _offsetLaser;
 
     bool isDestroyed = false;
     [SerializeField]
     float _cdFire;
     float fireRate;
-
-    int _randomMovement = 0;
+    [SerializeField]
+    MovementType movementType;
     int _randomSideMovement = 0;
 
     float _posX;
@@ -67,7 +76,6 @@ public class Enemy : MonoBehaviour
 
         transform.position = new Vector3(randomX, 8, 0);
 
-        _randomMovement = Random.Range(0, 3);
         _randomSideMovement = Random.Range(0, 2);
 
         _rotCenter = transform.position;
@@ -87,7 +95,16 @@ public class Enemy : MonoBehaviour
         if (Time.time > _cdFire && !isDestroyed  && transform.position.y<7)
         {
             CdChange();
-            Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity);
+            
+            if (_isLaserChild)
+            {
+                Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity,this.transform);
+            }
+            else
+            {
+                Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity);
+
+            }
         }
     }
 
@@ -98,14 +115,14 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        switch (_randomMovement)
+        switch (movementType)
         {
-            case 0:
+            case MovementType.Down:
                 transform.Translate(Vector3.down * Time.deltaTime * _speed);
 
 
                 break;
-            case 1:
+            case MovementType.SideToSide:
                 _posX = 1;
                 if (_randomSideMovement == 0)
                 {
@@ -130,7 +147,7 @@ public class Enemy : MonoBehaviour
                 }
                 break;
 
-            case 2:
+            case MovementType.Angular:
               
                 _angle += _angularSpeed * Time.deltaTime;
 

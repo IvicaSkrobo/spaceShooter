@@ -22,7 +22,7 @@ public class LaserHeatSeek : Laser
 
         foreach (var hit in hits)
         {
-            if (hit.CompareTag("Enemy"))
+            if (hit.CompareTag("Enemy")  && target==null)
             {
                 target = hit.transform.gameObject;
             }
@@ -65,9 +65,9 @@ public class LaserHeatSeek : Laser
 
 
 
-    protected override void Destruction()
+    protected override void CheckIfOutOfBounds()
     {
-        base.Destruction();
+        base.CheckIfOutOfBounds();
         if (transform.position.x < -13 || transform.position.x > 13)
         {
             Destroy(this.gameObject);

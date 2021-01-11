@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [Header("Enemy")]
-    [SerializeField] GameObject _enemyPrefab;
+    [SerializeField] GameObject[] _enemyPrefab;
     [SerializeField] GameObject _enemyContainer;
 
     [Header("Powerups")]
@@ -48,7 +48,7 @@ public class SpawnManager : MonoBehaviour
                 enemiesToSpawn = enemiesPerWawe;
 
                 _uiManager.UpdateWaweText(waweNumber+1);
-
+                
                 yield return new WaitForSeconds(5f);
 
             }
@@ -56,7 +56,7 @@ public class SpawnManager : MonoBehaviour
             enemiesToSpawn--;
 
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7f, 0);
-            var newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+            var newEnemy = Instantiate(_enemyPrefab[Random.Range(0,_enemyPrefab.Length)], posToSpawn, Quaternion.identity);
 
             newEnemy.GetComponent<Enemy>().SetSpawnManager(this);
 
