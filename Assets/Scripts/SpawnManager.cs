@@ -1,30 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
     [Header("Enemy")]
-    [SerializeField] GameObject[] _enemyPrefab;
+    [SerializeField] GameObject[] _enemyPrefabs;
     [SerializeField] GameObject _enemyContainer;
-
+    [SerializeField] List<float> _enemyChances;
     [Header("Powerups")]
-    [SerializeField] GameObject[] _powerupPrefab;
+    [SerializeField] GameObject[] _powerupPrefabs;
     [SerializeField] GameObject _powerupContainer;
+    [SerializeField] List<float> _powerupsChances;
 
-    private bool stopSpawning = false;
+    private bool _stopSpawning = false;
 
-    int waweNumber = 0;
-    int nextWawe = 0;
-    int enemiesPerWawe = 3;
+    int _waweNumber = 0;
+    int _nextWawe = 0;
+    int _enemiesPerWawe = 3;
 
-    int enemiesToSpawn = 3;
+    int _enemiesToSpawn = 3;
 
     UIManager _uiManager;
+    float _sumOfPowerUpChances = 0;
+    float _sumOfEnemySpawnChances = 0;
 
     private void Start()
     {
         _uiManager = FindObjectOfType<UIManager>();
+
+        _powerupsChances = new List<float>();
+        _enemyChances = new List<float>();
+
+        for (int i = 0; i<_powerupPrefabs.Length;i++) 
+        {
+            var chance = _powerupPrefabs[i].GetComponent<Powerup>().GetPowerUpChance();
+            _powerupsChances.Add(chance);
+            _sumOfPowerUpChances += chance;
+        }
+
+       
+        for (int i = 0; i < _enemyPrefabs.Length; i++)
+        {
+            var chance = _enemyPrefabs[i].GetComponent<Enemy>().GetSpawnChance();
+            _enemyChances.Add(chance);
+            _sumOfEnemySpawnChances += chance;
+        }
     }
 
     public void StartSpawning()
@@ -38,25 +60,25 @@ public class SpawnManager : MonoBehaviour
     public IEnumerator SpawnEnemyRoutine()
     {
         yield return new WaitForSeconds(3f);
-        while (!stopSpawning)
+        while (!_stopSpawning)
         {
-            
-            if (waweNumber == nextWawe)
-            {
-                nextWawe++;
-                enemiesPerWawe = waweNumber + 2;
-                enemiesToSpawn = enemiesPerWawe;
 
-                _uiManager.UpdateWaweText(waweNumber+1);
-                
+            if (_waweNumber == _nextWawe)
+            {
+                _nextWawe++;
+                _enemiesPerWawe = _waweNumber + 2;
+                _enemiesToSpawn = _enemiesPerWawe;
+
+                _uiManager.UpdateWaweText(_waweNumber + 1);
+
                 yield return new WaitForSeconds(5f);
 
             }
 
-            enemiesToSpawn--;
+            _enemiesToSpawn--;
 
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7f, 0);
-            var newEnemy = Instantiate(_enemyPrefab[Random.Range(0,_enemyPrefab.Length)], posToSpawn, Quaternion.identity);
+            var newEnemy = Instantiate(_enemyPrefabs[RandomEnemyChance()], posToSpawn, Quaternion.identity);
 
             newEnemy.GetComponent<Enemy>().SetSpawnManager(this);
 
@@ -64,26 +86,26 @@ public class SpawnManager : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
 
-            if (enemiesToSpawn == 0)
+            if (_enemiesToSpawn == 0)
             {
-                yield return new WaitUntil(() => waweNumber == nextWawe);
+                yield return new WaitUntil(() => _waweNumber == _nextWawe);
             }
         }
     }
 
     public void EnemyDestroyed()
     {
-        enemiesPerWawe--;
-        if (enemiesPerWawe == 0)
+        _enemiesPerWawe--;
+        if (_enemiesPerWawe == 0)
         {
-            waweNumber++;
+            _waweNumber++;
         }
     }
 
 
     public void OnPlayerDeath()
     {
-        stopSpawning = true;
+        _stopSpawning = true;
     }
 
 
@@ -93,7 +115,7 @@ public class SpawnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        while (!stopSpawning)
+        while (!_stopSpawning)
 
         {
             var randomSpawnTime = Random.Range(3f, 7f);
@@ -101,20 +123,10 @@ public class SpawnManager : MonoBehaviour
 
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7f, 0);
 
-            var randomPowerUp = Random.Range(0, _powerupPrefab.Length);
+            var randomPowerUp = RandomPowerUpChance(); 
 
 
-            //give it a chance to not spawn the heat seeking power up
-            if (randomPowerUp == 5)
-            {
-               if (Random.Range(0, 4) < 1)
-                {
-                    randomPowerUp = Random.Range(0, _powerupPrefab.Length);
-                }
-                
-            }
-
-            var newPowerUp = Instantiate(_powerupPrefab[randomPowerUp], posToSpawn, Quaternion.identity);
+            var newPowerUp = Instantiate(_powerupPrefabs[randomPowerUp], posToSpawn, Quaternion.identity);
 
             newPowerUp.transform.parent = _powerupContainer.transform;
 
@@ -122,4 +134,43 @@ public class SpawnManager : MonoBehaviour
     }
 
 
+
+    public int RandomPowerUpChance()
+    {
+       var a = Random.Range(0f, _sumOfPowerUpChances);
+
+        float sumOfChances = 0;
+
+        for (int i = 0; i < _powerupsChances.Count; i++)
+        {
+            sumOfChances += _powerupsChances[i];
+            if (a < sumOfChances)
+            {
+                return i;
+            }
+        }
+
+        return 0;
+
+    }
+
+
+    public int RandomEnemyChance()
+    {
+        var a = Random.Range(0f, _sumOfEnemySpawnChances);
+
+        float sumOfChances = 0;
+
+        for (int i = 0; i < _enemyChances.Count; i++)
+        {
+            sumOfChances += _enemyChances[i];
+            if (a < sumOfChances)
+            {
+                return i;
+            }
+        }
+
+        return 0;
+
+    }
 }

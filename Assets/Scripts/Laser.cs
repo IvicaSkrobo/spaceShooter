@@ -17,12 +17,12 @@ public class Laser : MonoBehaviour
     bool _shouldRotate = false;
     [SerializeField]
     bool _shouldRandomlyMove = false;
-    float randomMovement = 0;
-    int changeMovement = 1;
+    float _randomMovement = 0;
+    int _changeMovement = 1;
 
     private void Awake()
     {
-        randomMovement = Random.Range(-1, 2);
+        _randomMovement = Random.Range(-1, 2);
 
     }
     void Update()
@@ -61,20 +61,20 @@ public class Laser : MonoBehaviour
     private void MoveRightOrLeft()
     {
 
-        if (randomMovement > 1)
+        if (_randomMovement > 1)
         {
-            changeMovement = 2;
+            _changeMovement = 2;
         }
-        else if(randomMovement<-1)
+        else if(_randomMovement<-1)
         {
-            changeMovement = -2;
+            _changeMovement = -2;
 
         }
 
-        randomMovement -= Time.deltaTime *changeMovement;
+        _randomMovement -= Time.deltaTime *_changeMovement;
 
 
-        transform.Translate(Vector3.right* randomMovement * _speed * Time.deltaTime, Space.World);
+        transform.Translate(Vector3.right* _randomMovement * _speed * Time.deltaTime, Space.World);
     }
 
     private void MoveUp()

@@ -80,7 +80,7 @@ PrefabInstance:
     - target: {fileID: 6086204364158418850, guid: 83d079dd395041b4ebf0d3ea68275f79,
         type: 3}
       propertyPath: m_Name
-      value: EnemyWithTripleLaser Down
+      value: EnemyWithTripleLaser Angular
       objectReference: {fileID: 0}
     - target: {fileID: 6706359183635302693, guid: 83d079dd395041b4ebf0d3ea68275f79,
         type: 3}
@@ -92,6 +92,11 @@ PrefabInstance:
         type: 3}
       propertyPath: movementType
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706359183635302693, guid: 83d079dd395041b4ebf0d3ea68275f79,
+        type: 3}
+      propertyPath: spawnChance
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83d079dd395041b4ebf0d3ea68275f79, type: 3}

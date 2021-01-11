@@ -10,7 +10,7 @@ public class LaserHeatSeek : Laser
     [SerializeField]
     float _rotateSpeed = 1f;
 
-    GameObject target;
+    GameObject _target;
 
     int _direction = 1;
 
@@ -22,25 +22,25 @@ public class LaserHeatSeek : Laser
 
         foreach (var hit in hits)
         {
-            if (hit.CompareTag("Enemy")  && target==null)
+            if (hit.CompareTag("Enemy")  && _target==null)
             {
-                target = hit.transform.gameObject;
+                _target = hit.transform.gameObject;
             }
         }
 
 
-        if (target != null)
+        if (_target != null)
         {
-            var enemy = target.GetComponent<Enemy>();
+            var enemy = _target.GetComponent<Enemy>();
 
             if (enemy != null && !enemy.IsDestroyed())
             {
-                Vector3 newDirection = target.transform.position - this.transform.position;
+                Vector3 newDirection = _target.transform.position - this.transform.position;
 
                 transform.up = Vector3.Lerp(transform.up, newDirection, _rotateSpeed * Time.deltaTime);
 
 
-                transform.position = Vector3.MoveTowards(this.transform.position, target.transform.position, _speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(this.transform.position, _target.transform.position, _speed * Time.deltaTime);
 
             }
             else

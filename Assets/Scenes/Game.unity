@@ -3158,14 +3158,22 @@ MonoBehaviour:
   - {fileID: 4273056623891949323, guid: e3f1064e2b8689f448561ed53f103407, type: 3}
   _enemyContainer: {fileID: 1169562836}
   _powerupPrefab:
-  - {fileID: 6213012849054555142, guid: de40931b7a47582498fc979e8946ebb6, type: 3}
-  - {fileID: 2515062751194907783, guid: 4a0a15c1e371725488cff53d0d44a5b6, type: 3}
-  - {fileID: 5290877046876117463, guid: 4ce91ddaaa0c2cc4d8c88e4d1071c92a, type: 3}
   - {fileID: 8327212364372209032, guid: 944cf1630393e97428f67dfc8647b88c, type: 3}
   - {fileID: 3167978178265551829, guid: dbdc6f68662546646b33bf3ede01c805, type: 3}
+  - {fileID: 5290877046876117463, guid: 4ce91ddaaa0c2cc4d8c88e4d1071c92a, type: 3}
+  - {fileID: 6213012849054555142, guid: de40931b7a47582498fc979e8946ebb6, type: 3}
+  - {fileID: 2515062751194907783, guid: 4a0a15c1e371725488cff53d0d44a5b6, type: 3}
   - {fileID: 2082612311479180389, guid: fe34f6713e6c10742805dbbbbbaddf19, type: 3}
   - {fileID: 741709823801866025, guid: 12f047e2cf985cc4ab9eed2cd221018e, type: 3}
   _powerupContainer: {fileID: 2025605929}
+  _powerupsChances:
+  - 0.4
+  - 0.1
+  - 0.05
+  - 0.15
+  - 0.15
+  - 0.1
+  - 0.15
 --- !u!4 &1869381206
 Transform:
   m_ObjectHideFlags: 0

@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour
 
     Animator _anim;
     AudioSource _audioSource;
+    [SerializeField]
+    float spawnChance = 0.1f;
 
     [Header("Laser attributes")]
     [SerializeField]
@@ -48,6 +50,12 @@ public class Enemy : MonoBehaviour
     Vector3 _rotCenter;
 
      SpawnManager _spawnManager;
+
+
+    public float GetSpawnChance()
+    {
+        return spawnChance;
+    }
 
     public void SetSpawnManager(SpawnManager spawnManager)
     {

@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 4
+  spawnChance: 0.3
   _laserPrefab: {fileID: 523857132015809188, guid: 91ad75cf0b18fb7468e61eccad5a8cec,
     type: 3}
   _isLaserChild: 0

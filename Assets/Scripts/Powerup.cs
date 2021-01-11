@@ -9,8 +9,16 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     float _powerupId = 0f;
     [SerializeField]
+    float powerUpChance =1f;
+
+
+    [SerializeField]
     AudioClip _audioClip;
 
+    public float GetPowerUpChance()
+    {
+        return powerUpChance;
+    }
 
     private void Update()
     {
