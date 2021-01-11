@@ -165,18 +165,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 4
   spawnChance: 0.1
-  _hasShield: 0
+  _hasShield: 1
   _shieldDestroyClip: {fileID: 8300000, guid: a42b8e0789fb2f64bb936cb45a79a4a4, type: 3}
   _laserPrefab: {fileID: 0}
   _isLaserChild: 0
   _offsetLaser: {x: 0, y: -1.23, z: 0}
+  _isAggresive: 1
+  _aggroToPlayer: 6
+  _shouldShootBehind: 0
   _cdFire: 100000
   movementType: 1
   _angle: 30
   _angularSpeed: 1
   _radius: 1
-  _isAggresive: 1
-  _aggroToPlayer: 6
 --- !u!50 &-8786808291462759351
 Rigidbody2D:
   serializedVersion: 4
@@ -332,7 +333,7 @@ GameObject:
   - component: {fileID: 4969659014493528028}
   - component: {fileID: 1443526435576994480}
   m_Layer: 0
-  m_Name: GameObject (1)
+  m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

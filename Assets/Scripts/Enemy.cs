@@ -36,6 +36,17 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     Vector3 _offsetLaser;
 
+    [Header("Aggresion attribute")]
+    [SerializeField]
+    bool _isAggresive = false;
+    [SerializeField]
+    float _aggroToPlayer = 5f;
+
+    [Header("ShootBehind")]
+    [SerializeField]
+    bool _shouldShootBehind = false;
+
+
     bool isDestroyed = false;
     [SerializeField]
     float _cdFire;
@@ -59,11 +70,7 @@ public class Enemy : MonoBehaviour
     SpawnManager _spawnManager;
 
 
-    [Header("Aggresion attribute")]
-    [SerializeField]
-    bool _isAggresive = false;
-    [SerializeField]
-    float _aggroToPlayer = 5f;
+   
     public float GetSpawnChance()
     {
         return spawnChance;
@@ -79,7 +86,6 @@ public class Enemy : MonoBehaviour
         _anim = GetComponentInChildren<Animator>();
         _audioSource = GetComponent<AudioSource>();
 
-        CdChange();
         if (_hasShield)
         {
             GiveShield();
@@ -124,20 +130,37 @@ public class Enemy : MonoBehaviour
             RandomMovementReset();
         }
 
-
+        
         if (_laserPrefab!=null && Time.time > _cdFire && !isDestroyed && transform.position.y < 7)
         {
-            CdChange();
 
-            if (_isLaserChild)
+            if (_shouldShootBehind)
             {
-                Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity, this.transform);
+
+                if (transform.position.y < _player.transform.position.y && Mathf.Abs(transform.position.x - _player.transform.position.x) < 0.5f)
+                {
+                    CdChange();
+
+                    Instantiate(_laserPrefab, transform.position - _offsetLaser, Quaternion.Euler(0f, 180f, 0f), this.transform);
+
+                }
             }
             else
             {
-                Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity);
+                CdChange();
 
+                if (_isLaserChild)
+                {
+                    Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity, this.transform);
+                }
+                else
+                {
+                    Instantiate(_laserPrefab, transform.position + _offsetLaser, Quaternion.identity);
+
+                }
             }
+
+
         }
     }
 

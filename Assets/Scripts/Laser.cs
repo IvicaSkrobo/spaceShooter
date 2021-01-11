@@ -11,6 +11,8 @@ public class Laser : MonoBehaviour
     [SerializeField]
     bool _isEnemyLaser;
     [SerializeField]
+    bool _backwardsLaser;
+    [SerializeField]
     bool _isBeam;
     // Update is called once per frame
     [SerializeField]
@@ -43,7 +45,15 @@ public class Laser : MonoBehaviour
         }
         else
         {
-            MoveDown();
+            if (_backwardsLaser)
+            {
+                MoveUp();
+
+            }
+            else
+            {
+                MoveDown();
+            }
         }
 
         if (_shouldRotate)

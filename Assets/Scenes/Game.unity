@@ -3186,6 +3186,7 @@ MonoBehaviour:
   - {fileID: 4273056623891949323, guid: 075be7fbea467fb41a4789d470cc86de, type: 3}
   - {fileID: 4273056623891949323, guid: 2761a6549bab5904baf89410280d498c, type: 3}
   - {fileID: 4273056623891949323, guid: fdbe7c5b53f1d9241a4535f45931e1aa, type: 3}
+  - {fileID: 9143159645422205243, guid: 493cf815ddd60b14b9c8428405304dbf, type: 3}
   _enemyContainer: {fileID: 1169562836}
   _enemyChances: []
   _powerupPrefabs:
